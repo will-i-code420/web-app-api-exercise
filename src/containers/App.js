@@ -1,26 +1,43 @@
 import React, { Component } from 'react';
 import logo from '../logo.svg';
 import './App.css';
+import { Client } from '@petfinder/petfinder-js';
 
 class App extends Component {
 	constructor() {
 		super();
-		this.state = {};
+		this.state = {
+			pets: []
+		};
+	}
+	async componentDidMount() {
+		const client = new Client({ apiKey: process.env.REACT_APP_PF_KEY, secret: process.env.REACT_APP_PF_SECRET });
+		try {
+			const res = await client.animal.search();
+			console.log(res);
+			this.setState({ pets: res.data.animals });
+		} catch (e) {
+			console.log(e);
+		}
 	}
 	render() {
-		return (
-			<div className="App">
-				<header className="App-header">
-					<img src={logo} className="App-logo" alt="logo" />
-					<p>
-						Edit <code>src/App.js</code> and save to reload.
-					</p>
-					<a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-						Learn React
-					</a>
-				</header>
-			</div>
-		);
+		const { pets } = this.state;
+		if (!pets.length) {
+			return <h1>Loading Pets....</h1>;
+		} else {
+			return (
+				<section className="App">
+					<header className="App-header">
+						<img src={logo} className="App-logo" alt="logo" />
+						<div>
+							<h1>Pets</h1>
+							<p>Let us help you find your new best friend</p>
+							<a href="#about">About Us</a>
+						</div>
+					</header>
+				</section>
+			);
+		}
 	}
 }
 
