@@ -3,6 +3,7 @@ import logo from '../logo.svg';
 import './App.css';
 import { Client } from '@petfinder/petfinder-js';
 import Search from '../components/Search';
+import CardList from '../components/CardList';
 
 class App extends Component {
 	constructor() {
@@ -43,6 +44,7 @@ class App extends Component {
 						</div>
 					</header>
 					<Search searchAnimal={this.onAnimalInput} />
+					<CardList pets={pets} />
 				</section>
 			);
 		}
